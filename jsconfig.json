@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "allowJs": true,
+    "strict": true
+  },
+  "include": ["webhooks.js", "import.js"],
+  "exclude": ["node_modules"]
+}
