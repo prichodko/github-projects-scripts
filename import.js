@@ -1,7 +1,9 @@
+require('dotenv').config()
+
 const { Octokit } = require('@octokit/rest')
 
 const octokit = new Octokit({
-  auth: `<AUTH_TOKEN>`,
+  auth: process.env.GITHUB_AUTH_TOKEN,
 })
 
 // https://docs.github.com/en/issues/trying-out-the-new-projects-experience/using-the-api-to-manage-projects#finding-the-node-id-of-an-organization-project

@@ -1,7 +1,9 @@
+require('dotenv').config()
+
 const { Webhooks } = require('@octokit/webhooks')
 
 const webhooks = new Webhooks({
-  secret: 'mysecret',
+  secret: process.env.GITHUB_WEBHOOKS_SECRET,
 })
 
 // all events, unnecessary are commented out
