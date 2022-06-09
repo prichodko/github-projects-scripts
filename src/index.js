@@ -52,6 +52,7 @@ const main = async () => {
       const db = new Sequelize(opts.outputSqlUrl, {logging: opts.debug})
       const sql = await new SQLExport(db).init()
       repos.forEach(repo => sql.importRepo(repo))
+      sql.createViews()
       break
   }
 }

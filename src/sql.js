@@ -38,4 +38,26 @@ export default class SQLExport {
       closedAt:  issue.closedAt,
     });
   }
+
+  createViews() {
+    /* Get list of uqnieue dates for all state changes that took place. */
+    this.db.query(`
+      CREATE OR REPLACE VIEW "Dates" AS
+        SELECT DISTINCT "createdAt"::DATE AS day FROM "Issues"
+        UNION
+        SELECT DISTINCT "closedAt"::DATE AS day FROM "Issues"
+        WHERE "closedAt" IS NOT NULL
+        ORDER BY day;
+    `)
+    /* Count up totalk, closed, and open issues on given date. */
+    this.db.query(`
+      CREATE OR REPLACE VIEW "Chart" AS
+        SELECT
+         day,
+         (SELECT count(*) FROM "Issues" WHERE "createdAt" <= day) AS total,
+         (SELECT count(*) FROM "Issues" WHERE "createdAt" <= day AND ("closedAt" IS NULL OR "closedAt" > day)) AS opened,
+         (SELECT count(*) FROM "Issues" WHERE "createdAt" <= day AND ("closedAt" IS NOT NULL AND "closedAt" <= day)) AS closed
+        FROM "Dates";
+    `)
+  }
 }
